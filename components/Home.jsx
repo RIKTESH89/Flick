@@ -19,7 +19,10 @@ function HomeScreen({navigation}) {
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.button} onPress={function(){navigation.push('Camera')}}>
-            <Text style={styles.text}>Open Camera</Text>
+            <Text style={styles.text}>Take Photo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={function(){navigation.push('Video')}}>
+            <Text style={styles.text}>Take Video</Text>
           </TouchableOpacity>
       </View>
     );

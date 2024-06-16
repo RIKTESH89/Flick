@@ -1,5 +1,5 @@
 
-import Video from './components/Video';
+import FlickVideo from './components/Video';
 import * as React from 'react';
 import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -33,7 +33,7 @@ function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Camera" component={CameraScreen} options={{ title:"Snapshot"}} />
         <Stack.Screen name="Details" component={DetailsScreen} />
-        <Stack.Screen name="Video" component={Video} />
+        <Stack.Screen name="Video" component={FlickVideo} />
       </Stack.Navigator>
     </NavigationContainer>
   );

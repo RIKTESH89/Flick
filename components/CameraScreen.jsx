@@ -213,6 +213,9 @@ export default function CameraScreen({ navigation }) {
   );
 }
 
+
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
