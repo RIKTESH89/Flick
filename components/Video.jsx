@@ -3,6 +3,7 @@ import { Video } from 'expo-av';
 import { CameraView,useCameraPermissions,Camera,useMicrophonePermissions } from "expo-camera";
 import { useState,useRef } from "react";
 import { StatusBar, Button } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function FlickVideo({navigation}) {
     const {type,setType} = useState('back')
@@ -13,6 +14,7 @@ export default function FlickVideo({navigation}) {
     const [capturedVideo, setCapturedVideo] = useState(null);
     const [camera,setCamera] = useState(null)
     const [micpermission, micrequestPermission] = useMicrophonePermissions();
+    const [count, setCount] = useState(0); 
 
 
     if(!permission || !micpermission) {
@@ -60,20 +62,29 @@ export default function FlickVideo({navigation}) {
         setType((current)=> current === "back" ? "front" : "back");
     }
 
+    const storeData = async (key,value) => {
+        try{
+            await AsyncStorage.setItem(key.toString(),value);
+        }
+        catch(e){
+            Alert.alert('Error', 'Failed to store data: ' + e.message);
+        }
+    }
+
     const recordVideo = async () => {
         if (camera && camera.recordAsync) {
           try {
             console.log('Starting video recording...');
-            const videoRecordPromise = camera.recordAsync({
-              maxDuration: 3, // Duration in seconds
-            });
+            const videoRecordPromise = camera.recordAsync();
       
             if (videoRecordPromise) {
               const recording = await videoRecordPromise;
               console.log('Video recording finished:', recording);
-              setCapturedVideo(recording.uri);
+                setCount((count)=>count+1)
+                storeData(count,recording.uri);
+              setCapturedVideo(recording);
               setPreviewVisible(true);
-              setStartCamera(false);
+            //   setStartCamera(false);
             } else {
               console.log('Video record promise is null');
             }
@@ -91,7 +102,7 @@ export default function FlickVideo({navigation}) {
     const stopVideo = () => {
         camera.stopRecording();
         setPreviewVisible(true);
-        setStartCamera(false);
+        // setStartCamera(false);
     }
 
     const retakeVideo = () => {
@@ -102,7 +113,7 @@ export default function FlickVideo({navigation}) {
 
     return (
     <View style={styles.container}>
-      {true ? (
+      {startCamera ? (
         <View
           style={{
             flex: 1,
@@ -156,23 +167,16 @@ export default function FlickVideo({navigation}) {
                     }}
                   >
                     <TouchableOpacity
-                      onPress={recordVideo}
+                      onPress={function(){
+                        recordVideo();
+                        setTimeout(stopVideo, 4000)
+                      }}
                       style={{
                         width: 70,
                         height: 70,
                         bottom: 0,
                         borderRadius: 50,
                         backgroundColor: '#fff'
-                      }}
-                    />
-                    <TouchableOpacity
-                      onPress={stopVideo}
-                      style={{
-                        width: 70,
-                        height: 70,
-                        bottom: 0,
-                        borderRadius: 50,
-                        backgroundColor: '#f18973'
                       }}
                     />
                   </View>
@@ -255,28 +259,27 @@ const styles = StyleSheet.create({
     const [status, setStatus] = useState({});
     const video = useRef(null);
 
-    console.log('sdsfds', recording)
     return (
       <View>
         <Video
         ref={video}
-        style={{height: 680, width: 450}}
+        style={{height: 680, width: 400}}
         source={{
         uri: recording.uri,
         }}
-        // useNativeControls
-        // resizeMode="contain"
-        // isLooping
-        // onPlaybackStatusUpdate={status => setStatus(() => status)}
-        // />
-        // <View style={styles.button}>
-        //         <Button
-        //         title={status.isPlaying ? 'Pause' : 'Play'}
-        //         onPress={() =>
-        //         status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
-        // }
+        useNativeControls
+        resizeMode="contain"
+        isLooping
+        onPlaybackStatusUpdate={status => setStatus(() => status)}
+        />
+        <View style={styles.button}>
+                <Button
+                title={status.isPlaying ? 'Pause' : 'Play'}
+                onPress={() =>
+                status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+        }
             />
-        {/* </View> */}
+        </View>
         <Button
           onPress={retakeVideo}
           title="Retake"
@@ -284,7 +287,6 @@ const styles = StyleSheet.create({
       </View>
     )
   }  
-
 
 
 

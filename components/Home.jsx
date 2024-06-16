@@ -12,17 +12,17 @@ function HomeScreen({navigation}) {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Home Screen</Text>
 
-        <TouchableOpacity style={styles.button} onPress={function(){navigation.push('Details',{
+        <TouchableOpacity style={styles.button} onPress={function(){navigation.push('Feed',{
             sendData:state
         })}}>
-            <Text style={styles.text}>Go to Details</Text>
+            <Text style={styles.text}>Go to Feed</Text>
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.button} onPress={function(){navigation.push('Camera')}}>
             <Text style={styles.text}>Take Photo</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={function(){navigation.push('Video')}}>
-            <Text style={styles.text}>Take Video</Text>
+            <Text style={styles.text}>Take Snaps</Text>
           </TouchableOpacity>
       </View>
     );

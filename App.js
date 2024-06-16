@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen  from './components/Home';
 import CameraScreen from './components/CameraScreen';
-
+import Feed from './components/Feed';
 
 function DetailsScreen(){
   return (
@@ -32,7 +32,7 @@ function App() {
       }}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Camera" component={CameraScreen} options={{ title:"Snapshot"}} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen name="Feed" component={Feed} />
         <Stack.Screen name="Video" component={FlickVideo} />
       </Stack.Navigator>
     </NavigationContainer>
