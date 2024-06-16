@@ -14,7 +14,6 @@ export default function FlickVideo({navigation}) {
     const [capturedVideo, setCapturedVideo] = useState(null);
     const [camera,setCamera] = useState(null)
     const [micpermission, micrequestPermission] = useMicrophonePermissions();
-    const [count, setCount] = useState(0); 
 
 
     if(!permission || !micpermission) {
@@ -62,9 +61,10 @@ export default function FlickVideo({navigation}) {
         setType((current)=> current === "back" ? "front" : "back");
     }
 
-    const storeData = async (key,value) => {
+    const storeData = async (value) => {
         try{
-            await AsyncStorage.setItem(key.toString(),value);
+          const key = `video_${new Date().toLocaleString()}`;
+            await AsyncStorage.setItem(key,value);
         }
         catch(e){
             Alert.alert('Error', 'Failed to store data: ' + e.message);
@@ -80,8 +80,7 @@ export default function FlickVideo({navigation}) {
             if (videoRecordPromise) {
               const recording = await videoRecordPromise;
               console.log('Video recording finished:', recording);
-                setCount((count)=>count+1)
-                storeData(count,recording.uri);
+                storeData(recording.uri);
               setCapturedVideo(recording);
               setPreviewVisible(true);
             //   setStartCamera(false);

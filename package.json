@@ -11,12 +11,15 @@
   "dependencies": {
     "@expo/metro-runtime": "~3.2.1",
     "@react-native-async-storage/async-storage": "^1.23.1",
+    "@react-native-community/datetimepicker": "^8.1.0",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
+    "@shopify/flash-list": "1.6.4",
     "@types/react": "~18.2.79",
     "expo": "~51.0.14",
     "expo-av": "~14.0.5",
     "expo-camera": "~15.0.11",
+    "expo-dev-client": "~4.0.18",
     "expo-file-system": "~17.0.1",
     "expo-media-library": "~16.0.3",
     "expo-permissions": "^14.4.0",
@@ -32,12 +35,11 @@
     "react-native-web": "~0.19.10",
     "twrnc": "^4.2.0",
     "typescript": "~5.3.3",
-    "undefined": "@/components/icon",
-    "@shopify/flash-list": "1.6.4",
-    "expo-dev-client": "~4.0.18"
+    "undefined": "@/components/icon"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@types/react-native": "^0.73.0",
     "tailwindcss": "^3.3.2"
   },
   "private": true
