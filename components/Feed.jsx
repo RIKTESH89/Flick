@@ -116,7 +116,7 @@
 
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, FlatList, Button, StyleSheet, Alert,Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Video } from 'expo-av';
 import * as MediaLibrary from 'expo-media-library';
@@ -124,6 +124,7 @@ import * as Permissions from 'expo-permissions';
 
 export default function VideoGallery() {
   const [videos, setVideos] = useState([]);
+  const [cameras, setCameras] = useState([]);
   const [permission, setPermission] = useState(null);
 
   useEffect(() => {
@@ -142,7 +143,8 @@ export default function VideoGallery() {
         const keys = await AsyncStorage.getAllKeys();
         const videoKeys = keys.filter(key => key.startsWith('video_'));
         const videoURIs = await AsyncStorage.multiGet(videoKeys);
-        setVideos(videoURIs.map(item => item[1]));
+        console.log(videoURIs);
+        setVideos(videoURIs.map(item => JSON.parse(item[1])));
       } catch (err) {
         console.log(err);
       }
@@ -176,13 +178,17 @@ export default function VideoGallery() {
         renderItem={({ item }) => (
           <View style={styles.videoContainer}>
             <Video
-              source={{ uri: item }}
+              source={{ uri: item?.videoValue }}
               rate={0.3}
               volume={1.0}
               isMuted={false}
               resizeMode="cover"
               isLooping
               style={styles.video}
+            />
+            <Image
+              source={{uri: item?.cameraValue}}
+              style={{height: 600, width: 450}}
             />
             <Button title="Download" onPress={() => saveFile(item)} />
           </View>

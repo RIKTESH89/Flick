@@ -11,6 +11,9 @@ function HomeScreen({navigation}) {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Home Screen</Text>
+        <TouchableOpacity style={styles.button} onPress={function(){navigation.push('Details')}}>
+            <Text style={styles.text}>CLEAR</Text>
+          </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={function(){navigation.push('Feed',{
             sendData:state
@@ -24,6 +27,7 @@ function HomeScreen({navigation}) {
           <TouchableOpacity style={styles.button} onPress={function(){navigation.push('Video')}}>
             <Text style={styles.text}>Take Snaps</Text>
           </TouchableOpacity>
+          
       </View>
     );
   }

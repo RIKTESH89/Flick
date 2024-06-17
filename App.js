@@ -1,16 +1,27 @@
 
 import FlickVideo from './components/Video';
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text,button, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen  from './components/Home';
 import CameraScreen from './components/CameraScreen';
 import Feed from './components/Feed';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 function DetailsScreen(){
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Button onPress={clearAll = async () => {
+  try {
+    await AsyncStorage.clear()
+  } catch(e) {
+    // clear error
+  }
+
+  console.log('Done.')
+}} title='Clear'/>
       <Text>Details Screen</Text>
     </View>
   )
@@ -34,6 +45,8 @@ function App() {
         <Stack.Screen name="Camera" component={CameraScreen} options={{ title:"Snapshot"}} />
         <Stack.Screen name="Feed" component={Feed} />
         <Stack.Screen name="Video" component={FlickVideo} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

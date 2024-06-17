@@ -1,11 +1,11 @@
 import {StyleSheet, Text, View, TouchableOpacity, Alert, ImageBackground, Image,} from 'react-native'
 import { Video } from 'expo-av';
 import { CameraView,useCameraPermissions,Camera,useMicrophonePermissions } from "expo-camera";
-import { useState,useRef } from "react";
+import { useState,useRef, useEffect } from "react";
 import { StatusBar, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function FlickVideo({navigation}) {
+export default function FlickVideo({navigation , route }) {
     const {type,setType} = useState('back')
     const video = useRef(null);
     const [permission, requestPermission] = useCameraPermissions();
@@ -14,7 +14,24 @@ export default function FlickVideo({navigation}) {
     const [capturedVideo, setCapturedVideo] = useState(null);
     const [camera,setCamera] = useState(null)
     const [micpermission, micrequestPermission] = useMicrophonePermissions();
+    
 
+    useEffect(function(){
+      if(route.params?.photoUri && capturedVideo?.uri){
+        const storeData = async (videoValue,cameraValue) => {
+          try{
+            const key = `video_${new Date().toLocaleString()}`;
+            const jsonValue = JSON.stringify({cameraValue: cameraValue, videoValue: videoValue});
+            console.log(jsonValue);
+              await AsyncStorage.setItem(key,jsonValue);
+          }
+          catch(e){
+              Alert.alert('Error', 'Failed to store data: ' + e.message);
+          }
+      }
+      storeData(capturedVideo.uri,route.params?.photoUri)
+      }
+    },[route.params?.photoUri,capturedVideo,setCapturedVideo])
 
     if(!permission || !micpermission) {
         // Camera permissions are still loading
@@ -80,7 +97,6 @@ export default function FlickVideo({navigation}) {
             if (videoRecordPromise) {
               const recording = await videoRecordPromise;
               console.log('Video recording finished:', recording);
-                storeData(recording.uri);
               setCapturedVideo(recording);
               setPreviewVisible(true);
             //   setStartCamera(false);
@@ -212,6 +228,28 @@ export default function FlickVideo({navigation}) {
               }}
             >
               Take Video
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Camera')}
+            style={{
+              width: 130,
+              backgroundColor: '#14274e',
+              flexDirection: 'row',
+              marginTop: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 40
+            }}
+          >
+            <Text
+              style={{
+                color: '#fff',
+                fontWeight: 'bold',
+                textAlign: 'center'
+              }}
+            >
+              Take Photo
             </Text>
           </TouchableOpacity>
         </View>

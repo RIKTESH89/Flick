@@ -80,7 +80,7 @@ export default function CameraScreen({ navigation }) {
           }}
         >
           {previewVisible && capturedImage ? (
-            <CameraPreview photo={capturedImage} retakePicture={__retakePicture} />
+            <CameraPreview photo={capturedImage} retakePicture={__retakePicture} navigation={navigation}/>
           ) : (
             <CameraView
               facing={type}
@@ -246,17 +246,25 @@ const styles = StyleSheet.create({
 
 
 
-const CameraPreview = ({photo, retakePicture}) => {
+const CameraPreview = ({photo, retakePicture,navigation}) => {
   console.log('sdsfds', photo)
   return (
     <View>
       <Image
         source={{uri: photo.uri}}
-        style={{height: 680, width: 450}}
+        style={{height: 600, width: 450}}
       />
       <Button
         onPress={retakePicture}
         title="Retake"
+      />
+      <Button
+        onPress={() => navigation.navigate({
+          name: 'Video',
+          params : {photoUri : photo.uri},
+          merge: true
+        })}
+        title="Done"
       />
     </View>
   )
